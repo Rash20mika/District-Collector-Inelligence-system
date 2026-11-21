@@ -459,6 +459,16 @@ def dashboard_snapshot(path: str, now: Optional[datetime] = None) -> Dict[str, A
                 """
             ).fetchall()
         }
+        reported_categories_by_district: Dict[str, Dict[str, int]] = {}
+        for row in connection.execute(
+            """
+            SELECT district, category, COUNT(*) AS count FROM incidents
+            WHERE district IS NOT NULL GROUP BY district, category
+            """
+        ).fetchall():
+            reported_categories_by_district.setdefault(row["district"], {})[
+                row["category"]
+            ] = row["count"]
 
     return {
         "active_issues": active_issues,
@@ -470,6 +480,7 @@ def dashboard_snapshot(path: str, now: Optional[datetime] = None) -> Dict[str, A
         "reported_incidents_30d": report_window["incidents"],
         "reported_districts_30d": report_window["districts"],
         "reported_by_district": reported_by_district,
+        "reported_categories_by_district": reported_categories_by_district,
     }
 
 

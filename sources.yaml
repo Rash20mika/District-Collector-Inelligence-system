@@ -123,8 +123,8 @@ sources:
     enabled: true
     approved_by: "DEMO - confirm with Collector's office"
 
-  # Tavily Search searches the configured portal domains. Tavily Extract is used only
-  # for the public HTTPS URLs explicitly supplied in the app's link input.
+  # Tavily Search searches the configured official and news domains. Tavily Extract
+  # processes matching search results and public HTTPS URLs supplied by the user.
   # Both API requests need TAVILY_API_KEY in .env.
   tavily_search:
     name: Tavily Search API

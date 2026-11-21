@@ -62,6 +62,31 @@ class IncidentDashboardTests(unittest.TestCase):
         self.assertIsNone(snapshot["active_issues"])
         self.assertEqual(snapshot["reported_by_district"]["Madurai"], 1)
 
+    def test_dashboard_groups_reported_categories_by_district(self):
+        records = [
+            {
+                "title": f"Madurai report {index} about {category}",
+                "district": "Madurai",
+                "category": category,
+                "published_at": datetime(2026, 11, 1, tzinfo=timezone.utc)
+                + timedelta(days=index * 5),
+                "source_url": f"https://news.example/category/{index}",
+                "source_name": "Test",
+            }
+            for index, category in enumerate(
+                ["flood_rain", "flood_rain", "fire"], start=1
+            )
+        ]
+        incident_dashboard.ingest_records(self.database, records, DISTRICTS)
+
+        snapshot = incident_dashboard.dashboard_snapshot(self.database)
+
+        self.assertEqual(
+            snapshot["reported_categories_by_district"]["Madurai"],
+            {"fire": 1, "flood_rain": 2},
+        )
+        self.assertNotIn("Chennai", snapshot["reported_categories_by_district"])
+
     def test_verified_status_and_severity_are_required_for_active_kpis(self):
         incident_dashboard.ingest_records(
             self.database,

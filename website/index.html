@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a56">
+  <meta name="description" content="Tamil Nadu District Intelligence Portal">
+  <title>District Intelligence | Government of Tamil Nadu</title>
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="/assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+  <div class="government-bar">
+    <div class="page-width government-bar-inner">
+      <span class="government-mark" aria-hidden="true">TN</span>
+      <span>தமிழ்நாடு அரசு <span class="government-divider">|</span> Government of Tamil Nadu</span>
+      <span class="government-bar-right">District administration · Tamil Nadu</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="page-width site-header-inner">
+      <a class="brand" href="/" aria-label="Tamil Nadu District Intelligence home">
+        <span class="brand-seal" aria-hidden="true">
+          <svg viewBox="0 0 48 48" role="presentation">
+            <circle cx="24" cy="24" r="21"></circle>
+            <path d="M24 10v6m-8 3h16M18 20v8m12-8v8M14 30h20M12 35h24M19 18l5-4 5 4M20 24h8"></path>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>Tamil Nadu District Intelligence</strong>
+          <span>Collectorate situational awareness portal</span>
+        </span>
+      </a>
+      <div class="header-utility">
+        <span class="security-indicator"><span class="status-dot"></span> Secure access</span>
+        <button class="button button-outline button-small" id="logoutButton" type="button" hidden>Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <section class="login-view" id="loginView" aria-labelledby="loginTitle">
+      <div class="login-backdrop" aria-hidden="true">
+        <span class="backdrop-ring backdrop-ring-one"></span>
+        <span class="backdrop-ring backdrop-ring-two"></span>
+      </div>
+      <div class="login-layout page-width">
+        <div class="login-intro">
+          <p class="eyebrow eyebrow-light">DISTRICT ADMINISTRATION PORTAL</p>
+          <h1>Situational awareness.<br><span>Informed response.</span></h1>
+          <p class="login-intro-copy">A single view of reported incidents, district information and approved public sources for Tamil Nadu.</p>
+          <div class="login-assurance">
+            <span class="assurance-icon" aria-hidden="true">✓</span>
+            <span>Access is restricted to authorised users</span>
+          </div>
+        </div>
+        <div class="login-card">
+          <div class="login-card-heading">
+            <span class="login-lock" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"></path></svg>
+            </span>
+            <div>
+              <p class="eyebrow">AUTHORISED ACCESS</p>
+              <h2 id="loginTitle">Sign in to continue</h2>
+            </div>
+          </div>
+          <p class="login-card-copy">Use the account provided by your administrator.</p>
+          <form id="loginForm">
+            <label for="username">Username</label>
+            <input id="username" name="username" autocomplete="username" required maxlength="120">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256">
+            <p class="form-message" id="loginMessage" aria-live="polite"></p>
+            <button class="button button-primary button-wide" id="loginButton" type="submit">
+              Sign in <span aria-hidden="true">→</span>
+            </button>
+          </form>
+          <p class="login-help" id="loginSetupNote" hidden>Sign-in is not configured. Set the Collector credentials in <code>.env</code>; add separate PA credentials to enable the PA site.</p>
+          <div class="login-card-footer"><span class="mini-shield" aria-hidden="true">◆</span> Your session is protected with a secure, HttpOnly cookie.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="dashboard-view" id="dashboardView" hidden>
+      <div class="portal-ribbon">
+        <div class="page-width portal-ribbon-inner">
+          <span><span class="ribbon-dot"></span> DISTRICT INTELLIGENCE PORTAL</span>
+          <span id="currentDate">Tamil Nadu · India</span>
+        </div>
+      </div>
+
+      <div class="page-width portal-layout">
+        <aside class="site-sidebar" aria-label="Site navigation">
+          <p class="sidebar-label">WORKSPACE</p>
+          <button class="site-switch-button is-active" id="collectorSiteButton" type="button" aria-current="page">
+            <span class="site-switch-icon" aria-hidden="true">⌂</span>
+            <span>Collector site<small>Daily brief &amp; district intelligence</small></span>
+          </button>
+          <button class="site-switch-button" id="paSiteButton" type="button" aria-current="false">
+            <span class="site-switch-icon" aria-hidden="true">▤</span>
+            <span>PA site<small id="paSiteDescription">Weekly task management</small></span>
+            <span class="site-lock" id="paSiteLock" hidden>PA access required</span>
+          </button>
+          <div class="sidebar-role">
+            <span class="sidebar-role-dot"></span>
+            <span><small>SIGNED IN AS</small><strong id="signedInRole">Collector</strong></span>
+          </div>
+          <p class="sidebar-access-note" id="sidebarAccessNote" hidden>PA site is available only to an account configured with the PA role.</p>
+        </aside>
+
+        <div class="dashboard-shell">
+          <div id="collectorWorkspace">
+            <nav class="section-nav" aria-label="Main navigation">
+              <a class="section-nav-link is-current" href="#overview">Overview</a>
+              <a class="section-nav-link" href="#districts">District situation</a>
+              <a class="section-nav-link" href="#assistant">Intelligence assistant</a>
+              <a class="section-nav-link" href="#sources">Sources &amp; index</a>
+            </nav>
+
+          <section class="page-heading" id="overview">
+          <div>
+            <p class="eyebrow">STATEWIDE SITUATION</p>
+            <h1>District intelligence dashboard</h1>
+            <p class="page-subtitle">A current view of reported information across Tamil Nadu.</p>
+          </div>
+          <button class="button button-primary" id="refreshButton" type="button">
+            <span class="refresh-icon" aria-hidden="true">↻</span> Refresh incident data
+          </button>
+        </section>
+
+        <div class="notice notice-caution" role="note">
+          <span class="notice-icon" aria-hidden="true">i</span>
+          <p><strong>Evidence note</strong> Reported news is unverified and is not an official incident register. A missing report does not mean an incident did not occur.</p>
+        </div>
+        <div class="notice notice-error" id="pageError" role="alert" hidden></div>
+        <div class="notice notice-success" id="refreshMessage" role="status" hidden></div>
+
+        <section class="today-task-card" aria-labelledby="todayTasksHeading">
+          <div class="task-card-heading">
+            <div class="task-heading-icon" aria-hidden="true">✓</div>
+            <div>
+              <p class="eyebrow">COLLECTOR'S BOARD</p>
+              <h2 id="todayTasksHeading">Today's tasks</h2>
+              <p id="todayTaskDate" class="task-date">Loading today's schedule…</p>
+            </div>
+            <span class="task-count" id="todayTaskCount">— tasks</span>
+          </div>
+          <div id="todayTaskList" class="today-task-list" aria-live="polite">
+            <p class="empty-state">Loading tasks assigned by the PA…</p>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="Statewide summary">
+          <article class="metric-card">
+            <span class="metric-label">Reported incidents <span class="metric-period">30 days</span></span>
+            <strong class="metric-value" id="metricReported">—</strong>
+            <span class="metric-caption" id="metricReportedCaption">Deduplicated reports in the database</span>
+            <span class="metric-mark metric-mark-blue" aria-hidden="true">▤</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Emerging issue categories</span>
+            <strong class="metric-value" id="metricEmerging">—</strong>
+            <span class="metric-caption" id="metricEmergingCaption">Compared with the preceding 7 days</span>
+            <span class="metric-mark metric-mark-teal" aria-hidden="true">↗</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Pending actions</span>
+            <strong class="metric-value metric-value-text" id="metricActions">Data unavailable</strong>
+            <span class="metric-caption">No connected action-tracking system</span>
+            <span class="metric-mark metric-mark-gray" aria-hidden="true">✓</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Data freshness</span>
+            <strong class="metric-value metric-value-text" id="metricFreshness">Unknown</strong>
+            <span class="metric-caption" id="metricFreshnessCaption">Last successful source ingestion</span>
+            <span class="metric-mark metric-mark-purple" aria-hidden="true">◷</span>
+          </article>
+        </section>
+
+        <section class="week-tasks-card" aria-labelledby="weekTasksHeading">
+          <div class="compact-section-heading">
+            <div>
+              <p class="eyebrow">UPCOMING ASSIGNMENTS</p>
+              <h2 id="weekTasksHeading">Tasks for the next 7 days</h2>
+            </div>
+            <span id="weekTaskRange" class="task-date">Loading schedule…</span>
+          </div>
+          <div id="collectorWeekTaskList" class="collector-week-task-list" aria-live="polite">
+            <p class="empty-state">Loading weekly tasks…</p>
+          </div>
+        </section>
+
+        <section class="content-section district-section" id="districts" aria-labelledby="districtHeading">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">DISTRICT VIEW</p>
+              <h2 id="districtHeading">District-wise situation</h2>
+              <p>Select a district to review ingested reports and pass it as assistant context.</p>
+            </div>
+            <label class="district-picker-label" for="districtPicker">
+              Selected district
+              <select id="districtPicker">
+                <option value="">All Tamil Nadu</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="district-layout">
+            <div class="map-card">
+              <div class="map-card-heading">
+                <div>
+                  <h3>Tamil Nadu districts</h3>
+                  <span id="mapSource">Loading district boundary data…</span>
+                </div>
+                <span class="map-badge">38 districts</span>
+              </div>
+              <div class="map-stage" id="mapStage">
+                <svg id="districtMap" viewBox="0 0 640 700" role="img" aria-label="Select a district on the Tamil Nadu map"></svg>
+                <div class="map-loading" id="mapLoading" role="status">Loading district boundaries…</div>
+              </div>
+              <div class="map-legend">
+                <span class="legend-selection-swatch" aria-hidden="true"></span>
+                Selected district has a navy outline
+                <span class="legend-note">Fill shows the most frequent reported category, not verified active status.</span>
+              </div>
+              <ul id="mapCategoryLegend" class="map-category-legend" aria-label="Incident category color key"></ul>
+              <p class="map-disclaimer" id="mapDisclaimer">Boundary source and vintage are shown after the map loads. Verify community boundary data before official decisions.</p>
+            </div>
+            <aside class="district-detail-card" aria-live="polite">
+              <div class="detail-card-top">
+                <span class="detail-icon" aria-hidden="true">⌖</span>
+                <div>
+                  <p class="eyebrow">DISTRICT BRIEF</p>
+                  <h3 id="districtDetailTitle">Select a district</h3>
+                </div>
+              </div>
+              <p class="detail-summary" id="districtDetailSummary">Choose a district on the map or from the list to see reported information.</p>
+              <div class="detail-stat">
+                <span>Ingested reports</span>
+                <strong id="districtIncidentCount">—</strong>
+              </div>
+              <div class="detail-stat">
+                <span>Severity breakdown</span>
+                <strong class="muted-value">Data unavailable</strong>
+              </div>
+              <div class="detail-category-block">
+                <span class="detail-label">Reported categories</span>
+                <div id="districtCategories" class="category-tags"><span class="empty-note">Select a district to view categories.</span></div>
+              </div>
+              <button class="button button-secondary button-wide" id="askAboutDistrict" type="button" disabled>Ask about this district <span aria-hidden="true">→</span></button>
+            </aside>
+          </div>
+          <div class="incident-list-card">
+            <div class="incident-list-heading">
+              <div>
+                <p class="eyebrow">REPORTED INFORMATION</p>
+                <h3 id="incidentListTitle">District incident reports</h3>
+              </div>
+              <span class="report-status"><span class="status-dot status-dot-amber"></span> Unverified reports</span>
+            </div>
+            <div id="incidentList" class="incident-list" aria-live="polite">
+              <p class="empty-state">Select a district to load its ingested reports.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-section assistant-section" id="assistant" aria-labelledby="assistantHeading">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">ASK THE INTELLIGENCE ASSISTANT</p>
+              <h2 id="assistantHeading">Research with source context</h2>
+              <p>Answers use approved indexed pages and ingested incident reports. Review cited sources before acting.</p>
+            </div>
+            <span class="assistant-availability"><span class="status-dot status-dot-green"></span> Evidence-led responses</span>
+          </div>
+          <div class="assistant-layout">
+            <div class="chat-card">
+              <div class="chat-context" id="chatContext">
+                <span class="context-icon" aria-hidden="true">⌖</span>
+                <span>Context: <strong id="chatDistrictContext">Tamil Nadu statewide</strong></span>
+                <button type="button" id="clearDistrictContext" hidden>Clear</button>
+              </div>
+              <div class="chat-messages" id="chatMessages" aria-live="polite" aria-label="Conversation">
+                <div class="assistant-welcome">
+                  <span class="welcome-mark" aria-hidden="true">TN</span>
+                  <div><strong>How can I help?</strong><p>Ask a question about district information, reported incidents or the indexed sources.</p></div>
+                </div>
+              </div>
+              <form id="chatForm" class="chat-form">
+                <label class="visually-hidden" for="chatQuestion">Ask a question about Tamil Nadu</label>
+                <textarea id="chatQuestion" rows="2" maxlength="4000" placeholder="Ask a question about Tamil Nadu…" required></textarea>
+                <div class="chat-form-actions">
+                  <div class="chat-tools">
+                    <label class="select-label" for="responseStyle">Response style</label>
+                    <select id="responseStyle">
+                      <option>Standard</option>
+                      <option>Brief summary</option>
+                      <option>Bullet points</option>
+                      <option>Table format</option>
+                      <option>Simple language</option>
+                    </select>
+                    <button class="tool-button" id="toggleLinks" type="button" aria-expanded="false" aria-controls="linksPanel">Explore links</button>
+                  </div>
+                  <button class="button button-primary send-button" id="sendQuestion" type="submit">Ask <span aria-hidden="true">↑</span></button>
+                </div>
+              </form>
+              <div class="links-panel" id="linksPanel" hidden>
+                <label for="userLinks">Public HTTPS links <span>(up to 5, one per line)</span></label>
+                <textarea id="userLinks" rows="3" maxlength="12000" placeholder="https://example.gov.in/report"></textarea>
+                <p>Page text is extracted through the configured Tavily service. Leave blank to use the local index and incident records.</p>
+              </div>
+              <div class="voice-panel">
+                <div class="voice-panel-label"><span class="voice-icon" aria-hidden="true">◖</span><span>Voice question <small>English or Tamil</small></span></div>
+                <div class="voice-controls">
+                  <button class="button button-outline button-small" id="recordButton" type="button">Start recording</button>
+                  <label class="upload-button" for="audioUpload">Upload audio</label>
+                  <input id="audioUpload" type="file" accept=".flac,.mp3,.mp4,.mpeg,.mpga,.m4a,.ogg,.wav,.webm,audio/*" hidden>
+                </div>
+                <p id="voiceMessage" class="voice-message" aria-live="polite">Audio is transcribed with the configured speech service.</p>
+              </div>
+            </div>
+
+            <aside class="assistant-aside">
+              <div class="quick-questions-card">
+                <div class="aside-card-heading"><span class="aside-icon" aria-hidden="true">✦</span><h3>Suggested questions</h3></div>
+                <button class="suggestion" type="button">Which districts have recent flood or heavy-rain reports?</button>
+                <button class="suggestion" type="button">Summarize reported incidents across Tamil Nadu in the last 7 days</button>
+                <button class="suggestion" type="button">What emergency helpline numbers are available?</button>
+                <button class="suggestion" type="button">What weather warnings has IMD issued for Madurai?</button>
+                <button class="suggestion" type="button">Show the latest commodity prices and arrivals in Madurai</button>
+                <p class="suggestion-note">Live operational feeds may not be configured. Check each answer's sources and limitations.</p>
+              </div>
+              <div class="source-register-card" id="sources">
+                <div class="aside-card-heading"><span class="aside-icon aside-icon-navy" aria-hidden="true">▤</span><h3>Approved source register</h3></div>
+                <p class="aside-description">Configured public sources and their evidence classifications.</p>
+                <div id="sourceList" class="source-list"><p class="empty-note">Loading source register…</p></div>
+              </div>
+              <div class="index-card">
+                <div class="aside-card-heading"><span class="aside-icon aside-icon-green" aria-hidden="true">⌕</span><h3>Local knowledge index</h3></div>
+                <p id="indexSummary" class="aside-description">Checking index status…</p>
+                <p id="indexMessage" class="index-message" aria-live="polite"></p>
+                <button class="button button-secondary button-wide" id="rebuildIndexButton" type="button">Rebuild local index</button>
+                <p class="index-footnote">Builds a searchable index of enabled, approved sources. This may take some time.</p>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <footer class="site-footer">
+          <div class="footer-rule"></div>
+          <div class="footer-main">
+            <span class="footer-brand">Tamil Nadu District Intelligence</span>
+            <span>Evidence-led situational awareness</span>
+          </div>
+          <p class="prototype-note">Prototype for administrative situational awareness. This is not an official Government of Tamil Nadu website or emergency service. Verify source information with the relevant authority before taking action.</p>
+          <div class="footer-meta"><span>Government-style demonstration interface</span><span id="lastUpdated">Data status: awaiting refresh</span></div>
+        </footer>
+          </div>
+
+          <section class="pa-workspace" id="paWorkspace" aria-labelledby="paHeading" hidden>
+            <div class="page-heading pa-page-heading">
+              <div>
+                <p class="eyebrow">PERSONAL ASSISTANT WORKSPACE</p>
+                <h1 id="paHeading">Collector's weekly task board</h1>
+                <p class="page-subtitle">Create and maintain the Collector's schedule for today and the next six days.</p>
+              </div>
+              <span class="pa-board-badge"><span class="status-dot"></span> Shared with Collector</span>
+            </div>
+            <div class="notice notice-caution" role="note">
+              <span class="notice-icon" aria-hidden="true">i</span>
+              <p>Tasks saved here appear in the Collector site immediately. Dates use India Standard Time.</p>
+            </div>
+            <div class="notice notice-error" id="taskPageError" role="alert" hidden></div>
+            <section class="task-editor-card" aria-labelledby="taskEditorHeading">
+              <div class="task-editor-heading">
+                <div>
+                  <p class="eyebrow">SCHEDULE MANAGEMENT</p>
+                  <h2 id="taskEditorHeading">Add a task</h2>
+                </div>
+                <span class="task-window-label" id="paTaskWindow">Next 7 days</span>
+              </div>
+              <form id="taskForm">
+                <div class="task-form-grid">
+                  <label for="taskDate">
+                    Task date
+                    <input id="taskDate" name="task_date" type="date" required>
+                  </label>
+                  <label for="taskText">
+                    Task
+                    <textarea id="taskText" name="task_text" rows="2" maxlength="1000" placeholder="Enter the task to be completed…" required></textarea>
+                  </label>
+                </div>
+                <p class="task-form-message" id="taskFormMessage" aria-live="polite"></p>
+                <div class="task-form-actions">
+                  <button class="button button-primary" id="saveTaskButton" type="submit">Add to Collector's board</button>
+                  <button class="button button-outline" id="cancelTaskEdit" type="button" hidden>Cancel edit</button>
+                </div>
+              </form>
+            </section>
+            <section class="pa-week-section" aria-labelledby="paWeekHeading">
+              <div class="compact-section-heading">
+                <div>
+                  <p class="eyebrow">ASSIGNED TASKS</p>
+                  <h2 id="paWeekHeading">Collector's tasks this week</h2>
+                </div>
+                <span class="task-date" id="paWeekTaskCount">—</span>
+              </div>
+              <div id="paTaskBoard" class="pa-task-board" aria-live="polite">
+                <p class="empty-state">Loading the weekly task board…</p>
+              </div>
+            </section>
+            <footer class="site-footer">
+              <div class="footer-rule"></div>
+              <div class="footer-main">
+                <span class="footer-brand">Tamil Nadu District Intelligence</span>
+                <span>Personal Assistant workspace</span>
+              </div>
+              <p class="prototype-note">Prototype for administrative task coordination. Confirm assignments and deadlines with the Collectorate.</p>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
