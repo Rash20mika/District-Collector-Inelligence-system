@@ -1,0 +1,9 @@
+streamlit
+requests
+pyyaml
+python-dotenv
+langchain
+langchain-groq
+truststore
+numpy
+fastembed

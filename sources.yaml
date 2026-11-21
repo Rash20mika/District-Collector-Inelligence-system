@@ -1,0 +1,303 @@
+# Approved-source allowlist for the app's direct website requests.
+# The statewide dashboard stores source reports in SQLite. Set INCIDENT_DB_PATH to move
+# incident_dashboard.sqlite3; RSS/Tavily records remain unverified unless reviewed separately.
+# Tavily also extracts public HTTPS URLs explicitly supplied by the user in the link input.
+# To add a configured source: list its exact https domains, set enabled: true, fill approved_by.
+# To disable: set enabled: false. Nothing else in the code needs to change.
+
+# Index controls (used by the whole-site crawler in district_index.py):
+#   max_pages: pages to crawl for that source (default 300; raise it for big sites)
+#   index: false  -> do not crawl this source (use for live data that goes stale)
+
+sources:
+  district_portal:
+    max_pages: 500
+    name: NIC Portal - Madurai District
+    type: official_page
+    url: https://madurai.nic.in
+    domains: [madurai.nic.in]
+    search_param: s
+    # Seed pages for the index crawl (links on these pages are followed one level deep).
+    # CONFIRM this path in your browser: it should be the page that lists all schemes.
+    topic_paths:
+      schemes: /scheme/
+    evidence_level: official
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  madurai_departments:
+    max_pages: 100
+    name: Madurai District Departments (NIC)
+    type: official_page
+    url: https://madurai.nic.in/departments/
+    domains: [madurai.nic.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  helpline_portal:
+    max_pages: 50
+    name: Madurai District Helpline Portal (NIC)
+    type: official_page
+    url: https://madurai.nic.in/helpline/
+    domains: [madurai.nic.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  imd_madurai:
+    index: false   # live weather: answered by the live IMD worker; a saved copy would go stale
+    name: India Meteorological Department (IMD) - Madurai
+    type: official_page
+    url: https://city.imd.gov.in/citywx/city_weather_test_try_warnings.php?id=43360
+    domains: [city.imd.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  maduraicorporation:
+    max_pages: 500
+    name: Madurai Corporation
+    type: official_page
+    url: https://maduraicorporation.co.in/
+    search_url: https://maduraicorporation.co.in/wp-json/wp/v2/search
+    search_mode: wordpress
+    domains: [maduraicorporation.co.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  times_of_india:
+    max_pages: 100   # news site: very large, content changes hourly
+    name: Times of India
+    type: news_rss
+    url: https://timesofindia.indiatimes.com/
+    feed_url: https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms
+    domains: [timesofindia.indiatimes.com]
+    evidence_level: reported_news
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  tn_legislative_assembly:
+    max_pages: 300
+    name: Tamil Nadu Legislative Assembly (NeVA)
+    type: official_page
+    url: https://tnla.neva.gov.in/
+    domains: [tnla.neva.gov.in]
+    topic_paths:
+      news: /News
+      notices: /Notice/Index/TN
+      members: /ContactDirectory
+      questions: /Questions
+      legislation: /Bill
+      committee: /Committee
+      debates: /Debates
+      business: /Business
+    evidence_level: official
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  agmarknet:
+    index: false   # live prices from an API; answered by the live Agmarknet worker
+    name: Agmarknet 2.0
+    type: official_json
+    url: https://agmarknet.gov.in/home
+    api_base_url: https://api.agmarknet.gov.in/v1/
+    filters_path: daily-price-arrival/filters
+    data_path: dashboard-data/
+    domains: [agmarknet.gov.in, api.agmarknet.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  rainfall:
+    index: false   # dataset API, no web pages to crawl
+    name: Rainfall dataset (IMD / India-WRIS via data.gov.in)
+    type: official_json
+    # Set data_url to an approved data.gov.in resource API URL (https://api.data.gov.in/resource/<id>?format=json&limit=500)
+    # and put the key in DATA_GOV_API_KEY. Until then this worker reports "not configured".
+    data_url: ""
+    domains: [api.data.gov.in, data.gov.in, indiawris.gov.in]
+    api_key_env: DATA_GOV_API_KEY
+    evidence_level: official
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  # Tavily Search searches the configured portal domains. Tavily Extract is used only
+  # for the public HTTPS URLs explicitly supplied in the app's link input.
+  # Both API requests need TAVILY_API_KEY in .env.
+  tavily_search:
+    name: Tavily Search API
+    type: search_api
+    url: https://api.tavily.com/search
+    extract_url: https://api.tavily.com/extract
+    crawl_url: https://api.tavily.com/crawl
+    domains: [api.tavily.com]
+    evidence_level: tool
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  hindu_madurai:
+    max_pages: 100   # news site: RSS feed + article pages
+    name: The Hindu - Madurai
+    type: news_rss
+    url: https://www.thehindu.com/news/cities/Madurai/feeder/default.rss
+    domains: [www.thehindu.com, thehindu.com]
+    evidence_level: reported_news
+    enabled: true
+    approved_by: "DEMO - confirm with Collector's office"
+
+  tamil_nadu_government:
+    name: Tamil Nadu Government Portal
+    type: official_page
+    url: https://www.tn.gov.in/
+    domains: [www.tn.gov.in, tn.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "Public Tamil Nadu Government portal"
+
+  tamil_nadu_disaster_management:
+    name: Tamil Nadu Disaster Risk Reduction Agency
+    type: official_page
+    url: https://tnsdma.tn.gov.in/
+    domains: [tnsdma.tn.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "Public Tamil Nadu disaster-management portal"
+
+  imd_api_reference:
+    name: India Meteorological Department (IMD) API Reference
+    type: official_page
+    url: https://api.imd.gov.in/public/api_reference.html
+    domains: [api.imd.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "User-specified source"
+
+  sachet_ndma:
+    name: Sachet National Disaster Alert Portal (NDMA)
+    type: official_page
+    url: https://sachet.ndma.gov.in/
+    domains: [sachet.ndma.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "User-specified source"
+
+  tamil_nadu_dipr:
+    name: Tamil Nadu Department of Information and Public Relations
+    type: official_page
+    url: https://dipr.tn.gov.in/
+    domains: [dipr.tn.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "User-specified source"
+
+  tngis_accident_dashboard:
+    index: false
+    name: Tamil Nadu GIS Accident Dashboard
+    type: official_page
+    url: https://www.tngis.tn.gov.in/apps/accident-dashboard
+    metrics_url: https://www.tngis.tn.gov.in/apps/accident-dashboard/app/rerender.php
+    metrics_bounds: {left: 77.0, bottom: 8.0, right: 79.0, top: 10.0}
+    metrics_scope: Kanyakumari
+    domains: [www.tngis.tn.gov.in, tngis.tn.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "User-specified source"
+
+  tamil_nadu_fire_rescue:
+    name: Tamil Nadu Fire and Rescue Services
+    type: official_page
+    url: https://www.tnfrs.tn.gov.in/
+    domains: [www.tnfrs.tn.gov.in, tnfrs.tn.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "User-specified source"
+
+  tamil_nadu_nhm:
+    name: National Health Mission - Tamil Nadu
+    type: official_page
+    url: https://nhm.tn.gov.in/
+    domains: [nhm.tn.gov.in]
+    evidence_level: official
+    enabled: true
+    approved_by: "User-specified source"
+
+  tamil_nadu_district_boundaries:
+    name: Tamil Nadu district boundaries (community GeoJSON)
+    type: open_boundary
+    url: https://raw.githubusercontent.com/datta07/INDIAN-SHAPEFILES/master/STATES/TAMIL%20NADU/TAMIL%20NADU_DISTRICTS.geojson
+    domains: [raw.githubusercontent.com]
+    evidence_level: open_boundary
+    enabled: true
+    approved_by: "User-specified source; verify boundary vintage before official use"
+
+  # Add a Tamil-language paper here once its feed and terms of use are confirmed:
+  # tamil_paper:
+  #   name: <outlet>
+  #   type: news_rss
+  #   url: https://...
+  #   domains: [...]
+  #   evidence_level: reported_news
+  #   enabled: false
+  #   approved_by: null
+
+# Taluks used to resolve locations in news. Sources disagree on the exact list (11 vs 13+);
+# the administrator must confirm. Aliases cover spelling variants. Unmatched locations are flagged, never guessed.
+geography:
+  districts:
+    Ariyalur: []
+    Chengalpattu: []
+    Chennai: []
+    Coimbatore: []
+    Cuddalore: []
+    Dharmapuri: []
+    Dindigul: []
+    Erode: []
+    Kallakurichi: []
+    Kancheepuram: [Kanchipuram]
+    Kanniyakumari: [Kanyakumari]
+    Karur: []
+    Krishnagiri: []
+    Madurai: []
+    Mayiladuthurai: []
+    Nagapattinam: []
+    Namakkal: []
+    Nilgiris: [The Nilgiris, Nilgiri]
+    Perambalur: []
+    Pudukkottai: []
+    Ramanathapuram: []
+    Ranipet: []
+    Salem: []
+    Sivaganga: []
+    Tenkasi: []
+    Thanjavur: []
+    Theni: []
+    Thiruvallur: [Thiruvallur]
+    Thiruvarur: [Tiruvarur]
+    Thoothukudi: [Tuticorin, Thoothukkudi]
+    Tiruchirappalli: [Trichy]
+    Tirunelveli: []
+    Tirupattur: [Tirupathur]
+    Tiruppur: [Tirupur]
+    Tiruvannamalai: []
+    Vellore: []
+    Viluppuram: [Villupuram, Viluppuram]
+    Virudhunagar: []
+  taluks:
+    Madurai North: []
+    Madurai South: []
+    Madurai East: []
+    Madurai West: []
+    Melur: []
+    Peraiyur: []
+    Thirumangalam: [Tirumangalam]
+    Thiruparankundram: [Tiruparankundram]
+    Usilampatti: []
+    Vadipatti: []
+    Kalligudi: []
+    Sedapatti: []
+    Kallupatti: []
+    Kottampatti: []
+    Alanganallur: []
+    Chellampatti: []
